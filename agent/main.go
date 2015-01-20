@@ -3,6 +3,7 @@ package main
 import (
 	log "github.com/Sirupsen/logrus"
 	flags "github.com/jessevdk/go-flags"
+	"github.com/nu7hatch/gouuid"
 	"github.com/rphillips/agent"
 	"os"
 	"runtime"
@@ -48,11 +49,17 @@ func main() {
 	options := agent.StreamOptions{}
 	options.Queries = defaultMonitoringSRVQueries
 
+	source, err := uuid.NewV4()
+	if err != nil {
+		os.Exit(1)
+	}
+
 	info := agent.ClientInfo{}
 	info.Version = "9.0.0-dev"
 	info.Token = opts.Token
 	info.AgentId = opts.AgentId
 	info.AgentName = "rackspace-monitoring-go"
+	info.Source = source.String()
 
 	stream := agent.NewStream(&options, &info)
 	stream.Connect()

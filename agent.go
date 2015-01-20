@@ -24,6 +24,7 @@ type ClientInfo struct {
 	AgentName string
 	Token     string
 	Version   string
+	Source    string
 }
 
 func (c *MonitoringClient) handleMessage(msg *client.ClientMessage) {
@@ -87,8 +88,8 @@ func NewClient(conn io.ReadWriteCloser, datacenter string, info *ClientInfo) *Mo
 	cli := &MonitoringClient{
 		&client.Client{
 			RecvChan: make(chan *client.ClientMessage),
-			Source:   "be90f0cb-07dc-4cba-cc89-4c8d79ef1dce",
 			Target:   "endpoint",
+			Source:   info.Source,
 			Dec:      json.NewDecoder(conn),
 			Enc:      json.NewEncoder(conn),
 			C:        conn,
