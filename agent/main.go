@@ -20,7 +20,7 @@ var opts struct {
 }
 
 func init() {
-	log.SetFormatter(&log.JSONFormatter{})
+	//log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(os.Stderr)
 	log.SetLevel(log.DebugLevel)
 
@@ -39,6 +39,10 @@ func main() {
 	_, err := parser.Parse()
 	if err != nil {
 		os.Exit(1)
+	}
+
+	if len(opts.Token) == 0 || len(opts.AgentId) == 0 {
+		log.Fatal("Token and/or AgentId are required")
 	}
 
 	options := agent.StreamOptions{}
