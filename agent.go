@@ -52,12 +52,12 @@ func (c *MonitoringClient) start() {
 
 func (c *MonitoringClient) StartHeartbeat(interval uint64) {
 	for {
+		time.Sleep(time.Duration(interval) * time.Millisecond)
 		req := struct {
 			Timestamp int64 `json:"timestamp"`
 		}{
 			Timestamp: time.Now().UnixNano() / 100000,
 		}
-		time.Sleep(time.Duration(interval) * time.Millisecond)
 		log.Debug("heartbeat")
 		var res client.ClientMessage
 		c.Go("heartbeat.post", req, &res, nil)
